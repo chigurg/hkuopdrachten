@@ -1,0 +1,21 @@
+setcps (1.2)
+
+d1 $ fast 1$ sometimesBy 0.05 ((|* speed 2 ).(|+ accelerate 0.02))$ "glass/2"# sustain 4# sz 0.3 # room 0.2 # speed (0.5 + (range "-0.05" (0.05)$ perlin)) # hpf 40# resonance 0.3
+
+d2 $ echo 4$ degradeBy 0.5$ striate (randcat ["<12 12 [2 4] 2>", "1 2 3 4 2 1"])$ "[temple,toxicwaste]"# n (irand 3) # speed 15 # cut 2
+
+d3  $ every 7 (|* speed "-1")$ loopAt "4"$ gap "<2 128 1 4 32>"$ every 4 (ghost  ) $ "<vocahell:1 shriek?>" # sz "[0 .. 0.3]/8" # room 0.4 # gain 0.8
+
+d4 $every 3 (0.5 ~>) $ every 2 (0.75<~)$ "bloodysnow:1/3"# sustain 4 # orbit 4
+
+d5 $ every 20 (fast (choose [1,0.75])) $n "<1 [~ 1 1 1]  1 [~ 1 1 ~ ] 1 1>"#"[monst:3,house:2,bc:2??]" # lpf (range 10000 500 $ slow 16 $ saw)# resonance(range 0 0.6 $ slow 16 $ saw)  # coarse 4
+
+d6 $ every 4 (slow 8)$ "distdim,noesc:1*8" # legato 2 # speed "1" # leslie 1 # lrate (range 0.1 20 $ slow 20 $ sine)
+
+d7 $ every 4 (fast (choose [2,3,4,6,7]))$ note "[e e7]*3" #"hihat:1*8" # speed "[0.5 1 2 0.25]*8" # orbit 7 # hpf 1000# resonance 0.6 # gain 1.3
+
+d8 $ every 2 (loopAt 1)$ loopAt "<4>"$ "bleep:8" # accelerate 0
+
+d9 $degradeBy 0.75$ n "<4 [~ 4 4 4]  4 [~ 4 4 ~ ] 4 4>" # "[bassi:4]" # cut 2
+
+hush

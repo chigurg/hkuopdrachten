@@ -1,0 +1,439 @@
+setcps (78/120)
+
+d1 silence
+-- Sync clock im ableton
+
+p "midiclock" $ midicmd "midiClock*48" # s "midi1"
+
+once $ midicmd "stop" # s "midi1"
+
+hush
+
+-- CC's voor 8 macro's in ableton chords
+
+-- LFO rate op filter cutoff en op deze macro is ook de faseverschuiving gemapped
+
+p "d1cc"$ gain "<1*24>"
+# ccv ( range  50 127 $ rand  )
+# ccn  0
+# "midi1"
+# midichan "0"
+
+--LFO amount
+p "d1cc1"$ sometimesBy 0.125 (|+ ccv (range 40 100$ rand)) $ gain "<1*12>"
+# ccv 68.58
+# ccn  1
+# "midi1"
+# midichan "0"
+
+-- Freq filter
+p "d1cc2"$ every 24 (fast 4)$ gain "<1>"
+# ccv "<73 94.8>/8"
+# ccn  2
+# "midi1"
+# midichan "0"
+
+--Phase attack
+p "d1cc3"$ striate 128$ sometimesBy 0.25 (|+ ccv (choose[100,110,127,90])) $ gain "1*4"
+# ccv (range 0 127 $ slow 24 $ saw)
+# ccn  3
+# "midi1"
+# midichan "0"
+
+--Phaser release in ableton gemapped op macro phase attack
+p "d1cc4" $ gain "<1*2>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  4
+# "midi1"
+# midichan "0"
+
+--Echo input dB
+p "d1cc5" $ every 8 (|+ ccv 50)$ gain "<1>"
+# ccv "<63.25 63.25 63.25 63.25 63.25 63.25 63.25 63.25>"
+# ccn  5
+# "midi1"
+# midichan "0"
+
+--Feedback van echo input
+p "d1cc6" $ gain "1"
+# ccv "<100 100 100 100 100 100 100 100 10>"
+# ccn  6
+# "midi1"
+# midichan "0"
+
+--Decaytime
+p "d1cc7" $ gain "<1*3 ~ [1*6 1*3]>"
+# ccv ( range 0 127 $ fast 1 (slowappend (saw)(isaw) ))
+# ccn  7
+# "midi1"
+# midichan "0"
+
+
+d1 silence
+p "d1cc" silence
+p "d1cc1" silence
+p "d1cc2" silence
+p "d1cc3" silence
+p "d1cc4" silence
+p "d1cc5" silence
+p "d1cc6" silence
+p "d1cc7" silence
+hush
+--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+--CC's voor 8 macro's voor drones 1
+
+-- Semitones ofsett macro
+
+p "d2cc"$every 5 (|+ ccv ((127/24)*(-1)))$every 2 (|+ ccv (127/24)) $ gain "1"
+# ccv 64
+# ccn  0
+# "midi2"
+# midichan "1"
+
+--Octaaf offsets , octaafverschil is 21,3333 ccn waardes
+p "d2cc1" $every 10 (|+ ccv ((127/6)*(-1)))$every 8 (|+ ccv (127/6)) $ gain "<1>"
+# ccv (21.333*2)
+# ccn  1
+# "midi2"
+# midichan "1"
+
+--lfo rate
+p "d2cc2" $ gain "<1*17>"
+# ccv ( range 0 127 $ slow 8.5 $ saw )
+# ccn  2
+# "midi2"
+# midichan "1"
+
+--pinpong delay effect Lfo sync rate
+p "d2cc3" $foldEvery [12,39, 75](|+ ccv ((127/22)*(choose[8,10,11,12,13,14,15,16,17,22])))$ gain "1*8"
+# ccv ((127/22)*3)
+# ccn  3
+# "midi2"
+# midichan "1"
+
+--looppinpong base filterfrequentie met constante bandwidth
+p "d2cc4" $ gain "<1*16>"
+# ccv "<42.45 84.55>/24"
+# ccn  4
+# "midi2"
+# midichan "1"
+
+p "d2cc5" $ gain "<1*3 ~ [1*6 1*3]>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  5
+# "midi2"
+# midichan "1"
+
+p "d2cc6" $ gain "<1*3 ~ [1*6 1*3]>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  6
+# "midi2"
+# midichan "1"
+
+p "d2cc7" $ gain "<1*3 ~ [1*6 1*3]>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  7
+# "midi2"
+# midichan "1"
+
+
+d2 silence
+p "d2cc" silence
+p "d2cc1" silence
+p "d2cc2" silence
+p "d2cc3" silence
+p "d2cc4" silence
+p "d2cc5" silence
+p "d2cc6" silence
+p "d2cc7" silence
+hush
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+--CC's voor 8 macro's voor drones 2
+
+
+--Octaaf offsets , octaafverschil is 21,3333 ccn waardes
+p "d3cc" $ gain "1"
+# ccv (slow 16$choose [21,(21*2),(21*4)])
+# ccn  0
+# "midi3"
+# midichan "2"
+
+--lfo rate lfo 1
+p "d3cc1" $striate 128$ gain "1"
+# ccv ( range 0 127 $ slow 32 $ saw )
+# ccn  1
+# "midi3"
+# midichan "2"
+
+--VCA
+p "d3cc3" $ gain "1"
+# ccv "<63 [63 ~, ~80/16]>+17"
+# ccn  2
+# "midi3"
+# midichan "2"
+
+--lfo level mod stutter effect
+p "d3cc3"$ every 4 (|+ ccv 127) $ gain "1"
+# ccv  0
+# ccn  3
+# "midi3"
+# midichan "2"
+
+p "d3cc4" $ gain "<1*2>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  4
+# "midi3"
+# midichan "2"
+
+p "d3cc5" $ gain "<1>"
+# ccv (range 20 80 $ slow 4 $ rand )
+# ccn  5
+# "midi3"
+# midichan "2"
+
+p "d3cc6" $ gain "<1*3 ~ [1*6 1*3]>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  6
+# "midi3"
+# midichan "2"
+
+p "d3cc7" $ gain "<1*3 ~ [1*6 1*3]>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  7
+# "midi3"
+# midichan "2"
+
+
+d3 silence
+p "d3cc" silence
+p "d3cc1" silence
+p "d3cc2" silence
+p "d3cc3" silence
+p "d3cc4" silence
+p "d3cc5" silence
+p "d3cc6" silence
+p "d3cc7" silence
+hush
+
+
+--CC's voor 8 macro's voor drones 2
+
+
+p "d4cc" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  0
+# "midi4"
+# midichan "3"
+
+p "d4cc1" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  1
+# "midi4"
+# midichan "3"
+
+p "d4cc2" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  2
+# "midi4"
+# midichan "3"
+
+p "d4cc3" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  3
+# "midi4"
+# midichan "3"
+
+p "d4cc4" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  4
+# "midi4"
+# midichan "3"
+
+p "d4cc5" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  5
+# "midi4"
+# midichan "3"
+
+p "d4cc6" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  6
+# "midi4"
+# midichan "3"
+
+p "d4cc7" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  7
+# "midi4"
+# midichan "3"
+
+
+d4 silence
+p "d4cc" silence
+p "d4cc1" silence
+p "d4cc2" silence
+p "d4cc3" silence
+p "d4cc4" silence
+p "d4cc5" silence
+p "d4cc6" silence
+p "d4cc7" silence
+hush
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
+-- Synth 5
+
+d5  $ "midi5"
+# legato 1
+# midichan 4
+# cut 1
+# orbit 0
+# gain 1
+
+d5 silence
+
+hush
+
+-- CC's voor 8 macro's in ableton synth 5
+
+p "d5cc" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  0
+# "midi5"
+# midichan "4"
+
+p "d5cc1" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  1
+# "midi5"
+# midichan "4"
+
+p "d5cc2" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  2
+# "midi5"
+# midichan "4"
+
+p "d5cc3" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  3
+# "midi5"
+# midichan "4"
+
+p "d5cc4" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  4
+# "midi5"
+# midichan "4"
+
+p "d5cc5" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  5
+# "midi5"
+# midichan "4"
+
+p "d5cc6" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  6
+# "midi5"
+# midichan "4"
+
+p "d5cc7" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  7
+# "midi5"
+# midichan "4"
+
+
+d5 silence
+p "d5cc" silence
+p "d5cc1" silence
+p "d5cc2" silence
+p "d5cc3" silence
+p "d5cc4" silence
+p "d5cc5" silence
+p "d5cc6" silence
+p "d5cc7" silence
+hush
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
+-- Synth 6
+
+d6  $ "midi6"
+# legato 1
+# midichan 5
+# cut 1
+# orbit 0
+# gain 1
+
+d6 silence
+
+hush
+
+-- CC's voor 8 macro's in ableton synth 5
+
+p "d6cc" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  0
+# "midi6"
+# midichan "5"
+
+p "d6cc1" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  1
+# "midi6"
+# midichan "5"
+
+p "d6cc2" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  2
+# "midi6"
+# midichan "5"
+
+p "d6cc3" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  3
+# "midi6"
+# midichan "5"
+
+p "d6cc4" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  4
+# "midi6"
+# midichan "5"
+
+p "d6cc5" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  5
+# "midi6"
+# midichan "5"
+
+p "d6cc6" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  6
+# "midi6"
+# midichan "5"
+
+p "d6cc7" $ gain "<1>"
+# ccv ( range 0 127 $ fast 1 $ sine )
+# ccn  7
+# "midi6"
+# midichan "5"
+
+
+d6 silence
+p "d6cc" silence
+p "d6cc1" silence
+p "d6cc2" silence
+p "d6cc3" silence
+p "d6cc4" silence
+p "d6cc5" silence
+p "d6cc6" silence
+p "d6cc7" silence
+hush

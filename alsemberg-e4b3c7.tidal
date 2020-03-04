@@ -1,0 +1,15 @@
+setcps 0.8
+
+let x = n "[1 4 2 ~~ 5 10]"
+let stp = degradeBy 1
+
+d1 $  n (off 0.2 (|+1)) "<g'maj a'min*2 [d'maj5 ~] 3>")# "chord3" # legato 2 # leslie 1 # lrate 1 # size 0.4 # room 0.5
+d1 silence
+
+d2 $ every 5 (fast 3)$ "[feelfx:3*3, feelfx:2*6]"
+
+d3 $ "bass2:3*9"
+
+hush
+
+d1 $ "hiti"
